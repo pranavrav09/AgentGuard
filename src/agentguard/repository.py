@@ -145,8 +145,8 @@ class PostgresRepository:
                 body_hash,
                 request.agent_id,
                 request.tool_name,
-                _json(request.arguments),
-                _json(request.context),
+                request.arguments,
+                request.context,
                 status.value,
                 decision.action.value,
                 decision.reason,
@@ -277,7 +277,7 @@ class PostgresRepository:
                 """,
                 job.id,
                 job.lease_token,
-                _json(result),
+                dict(result),
             )
             if updated is None:
                 raise StaleLeaseError(f"lease no longer owns job {job.id}")
@@ -406,7 +406,7 @@ class PostgresRepository:
             request_id,
             event_type,
             actor,
-            _json(details),
+            dict(details),
             previous_hash,
             event_hash,
         )
