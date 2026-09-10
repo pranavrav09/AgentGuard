@@ -28,8 +28,8 @@ jobs:
     env:
       AGENTGUARD_TEST_DATABASE_URL: postgresql://agentguard:agentguard@localhost:5432/agentguard_test
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -41,11 +41,10 @@ jobs:
   rego:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Test OPA policies
         run: >-
           docker run --rm
           -v "${{ github.workspace }}/policy:/policies:ro"
           openpolicyagent/opa:1.17.0-static
           test /policies -v
-
