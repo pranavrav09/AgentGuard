@@ -49,6 +49,17 @@ def _json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
 
 
+async def _configure_connection(connection: asyncpg.Connection) -> None:
+    for type_name in ("json", "jsonb"):
+        await connection.set_type_codec(
+            type_name,
+            schema="pg_catalog",
+            encoder=_json,
+            decoder=json.loads,
+            format="text",
+        )
+
+
 class PostgresRepository:
     def __init__(self, pool: asyncpg.Pool, max_job_attempts: int = 5) -> None:
         self._pool = pool
@@ -56,7 +67,13 @@ class PostgresRepository:
 
     @classmethod
     async def connect(cls, database_url: str, max_job_attempts: int = 5) -> PostgresRepository:
-        pool = await asyncpg.create_pool(database_url, min_size=1, max_size=10, command_timeout=10)
+        pool = await asyncpg.create_pool(
+            database_url,
+            min_size=1,
+            max_size=10,
+            command_timeout=10,
+            init=_configure_connection,
+        )
         return cls(pool, max_job_attempts)
 
     async def close(self) -> None:

@@ -7,6 +7,7 @@
 FastAPI · Open Policy Agent / Rego · PostgreSQL · Python
 
 [![Started](https://img.shields.io/badge/started-July%202026-6d5dfc)](#project-history)
+[![CI](https://github.com/pranavrav09/AgentGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/pranavrav09/AgentGuard/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.12%2B-3776ab?logo=python&logoColor=white)](https://www.python.org/)
 [![OPA](https://img.shields.io/badge/OPA-Rego-7d4cdb)](https://www.openpolicyagent.org/)
 [![License](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
@@ -170,4 +171,3 @@ AgentGuard was started in **July 2026** and is under active development.
 ## License
 
 [MIT](LICENSE)
-

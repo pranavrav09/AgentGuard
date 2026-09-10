@@ -72,6 +72,7 @@ async def test_expired_lease_is_recovered_and_stale_ack_is_fenced(
     assert abandoned is not None
     assert recovered is not None
     assert recovered.id == abandoned.id
+    assert recovered.arguments == {"query": "recovery"}
     assert recovered.lease_token != abandoned.lease_token
     with pytest.raises(StaleLeaseError):
         await repository.complete_job(abandoned, "worker-a", {"ok": True})
@@ -80,3 +81,6 @@ async def test_expired_lease_is_recovered_and_stale_ack_is_fenced(
         "SELECT status FROM tool_call_requests WHERE id = $1", submitted.request_id
     )
     assert status == RequestStatus.COMPLETED.value
+    events = await repository.list_audit_events()
+    assert events[0].event_type == "tool_call_completed"
+    assert events[0].details["result"] == {"ok": True}
